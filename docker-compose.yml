@@ -1,7 +1,7 @@
 name: cuoiky
 services:
   db:
-    image: mysql:8.0
+    image: mysql:8.0.40
     restart: unless-stopped
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
@@ -14,10 +14,10 @@ services:
     networks: [backend]
     healthcheck:
       test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p$$MYSQL_ROOT_PASSWORD --silent"]
-      interval: 5s
+      interval: 10s
       timeout: 5s
-      retries: 20
-      start_period: 30s
+      retries: 30
+      start_period: 300s
 
   app:
     build: ./app
@@ -31,7 +31,7 @@ services:
       ADMIN_USER: ${ADMIN_USER}
       ADMIN_PASSWORD: ${ADMIN_PASSWORD}
     depends_on:
-      db: { condition: service_healthy }
+      - db
     networks: [backend]
     read_only: true
     tmpfs: [/tmp]
