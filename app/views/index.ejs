@@ -4,11 +4,116 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Portfolio - Vàng Thị Dẳm</title>
-  <link rel="stylesheet" href="/style.css">
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f4f7f6;
+      margin: 0;
+      padding: 40px 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      box-sizing: border-box;
+    }
+
+    .container {
+      background: #ffffff;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+      max-width: 750px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .avatar {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin: 0 auto 20px auto;
+      display: block;
+      border: 4px solid #3498db;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .section-title {
+      font-size: 1.8em;
+      font-weight: 700;
+      color: #2c3e50;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+      text-align: center;
+      letter-spacing: 1px;
+    }
+
+    .intro-text {
+      color: #34495e;
+      font-size: 1.05em;
+      line-height: 1.8;
+      margin-bottom: 25px;
+      text-align: center;
+      padding: 0 10px;
+    }
+
+    .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 10px 22px;
+      border-radius: 20px;
+      color: #ffffff !important;
+      font-weight: 600;
+      text-decoration: none !important;
+      transition: all 0.3s ease;
+    }
+
+    .btn-fb {
+      background-color: #1877f2;
+    }
+
+    .btn-insta {
+      background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+    }
+
+    .btn:hover {
+      opacity: 0.9;
+      transform: translateY(-2px);
+    }
+
+    .card {
+      background: #f8f9fa;
+      border: 1px solid #e9ecef;
+      border-radius: 8px;
+      padding: 20px;
+      margin-top: 20px;
+      text-align: left;
+    }
+
+    .card h3 {
+      margin-top: 0;
+      color: #2c3e50;
+    }
+
+    a {
+      color: #3498db;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
 </head>
 <body>
   <div class="container">
-    <!-- Ảnh đại diện -->
+    <!-- Ảnh cá nhân -->
     <img src="https://scontent.fhan5-8.fna.fbcdn.net/v/t39.30808-6/537375432_806130885404772_8690151710506764847_n.jpg?stp=dst-jpg_tt6&cstp=mx1080x1091&ctp=s1080x1091&_nc_cat=108&ccb=1-7&_nc_sid=6ee11a&_nc_eui2=AeGbPh4qiygVlI9VWjJDJwp9j4X3vMlVIlaPhfe8yVUiVnDBPc3R0FLNzcdcaNqXg2YDJ6y6UHzEvBNrdm2WTgyA&_nc_ohc=azJr5OJB6U8Q7kNvwFKT0RA&_nc_oc=Adr3RJR0j4XOEcS3bMUzQDWekYXii9k_pWCYcYZU2vnAl7LC7rSnDsEQbODscuq0J1w&_nc_zt=23&_nc_ht=scontent.fhan5-8.fna&_nc_gid=cWw3TWfIZ1uVjqS_ViTNEw&_nc_ss=7b2a8&oh=00_AQMNdFCt3VNlZ8aw_VTE3HTv78zlquhvSoww0OoH5UqdFw&oe=6ACC0B6D" class="avatar" alt="Vàng Thị Dẳm">
 
     <h1 class="section-title">GIỚI THIỆU BẢN THÂN</h1>
@@ -21,7 +126,7 @@
       Rất vui được làm quen với mọi người!
     </p>
 
-    <!-- Liên kết Mạng xã hội -->
+    <!-- Nút Facebook & Instagram -->
     <div class="social-links">
       <a href="https://www.facebook.com/jam.285673" target="_blank" class="btn btn-fb">Facebook</a>
       <a href="https://www.instagram.com/jamw_r/" target="_blank" class="btn btn-insta">Instagram</a>
