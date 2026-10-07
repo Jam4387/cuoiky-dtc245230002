@@ -91,25 +91,29 @@
       background: #f8f9fa;
       border: 1px solid #e9ecef;
       border-radius: 8px;
-      padding: 20px;
+      padding: 30px 20px;
       margin-top: 20px;
       text-align: center;
-    }
-
-    .card h3 {
-      margin-top: 0;
-      color: #2c3e50;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
 
     .btn-project {
       display: inline-block;
-      margin-top: 10px;
-      padding: 8px 18px;
+      padding: 12px 26px;
       background-color: #24292e;
       color: #ffffff !important;
       border-radius: 6px;
       font-weight: 600;
-      font-size: 0.9em;
+      font-size: 0.95em;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+      transition: all 0.3s ease;
+    }
+
+    .btn-project:hover {
+      background-color: #000000;
+      transform: translateY(-2px);
     }
 
     a {
@@ -143,10 +147,9 @@
       <a href="https://www.instagram.com/jamw_r/" target="_blank" class="btn btn-insta">Instagram</a>
     </div>
 
+    <!-- Khung Dự án chỉ chứa duy nhất Nút GitHub -->
     <h2 style="text-align: center; color: #2c3e50; margin-top: 35px;">Dự án</h2>
     <div class="card">
-      <h3>Đề tài 13: Website Portfolio & Hạ tầng Container Docker</h3>
-      <p>Hệ thống Web Portfolio tích hợp Nginx HTTPS, MySQL, Prometheus, Grafana & Loki Log Management.</p>
       <a href="https://github.com/Jam4387/cuoiky-dtc245230002" target="_blank" class="btn-project">Xem mã nguồn trên GitHub</a>
     </div>
 
