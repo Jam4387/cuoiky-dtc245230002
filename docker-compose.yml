@@ -81,7 +81,7 @@ services:
       - grafana_data:/var/lib/grafana
     ports:
       - "3001:3000"
-    depends_on: [prometheus]
+    depends_on: [prometheus, loki]
     networks: [frontend, backend]
 
   node-exporter:
@@ -95,6 +95,26 @@ services:
       - '--path.procfs=/host/proc'
       - '--path.sysfs=/host/sys'
       - '--path.rootfs=/rootfs'
+    networks: [backend]
+
+  loki:
+    image: grafana/loki:3.0.0
+    restart: unless-stopped
+    volumes:
+      - ./monitoring/loki-config.yml:/etc/loki/loki-config.yml:ro
+    command: -config.file=/etc/loki/loki-config.yml
+    ports:
+      - "3100:3100"
+    networks: [frontend, backend]
+
+  promtail:
+    image: grafana/promtail:3.0.0
+    restart: unless-stopped
+    volumes:
+      - ./monitoring/promtail-config.yml:/etc/promtail/promtail-config.yml:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    command: -config.file=/etc/promtail/promtail-config.yml
+    depends_on: [loki]
     networks: [backend]
 
 networks:
