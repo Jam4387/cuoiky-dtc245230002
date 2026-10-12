@@ -1,5 +1,35 @@
 name: cuoiky
 services:
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:v0.47.0
+    container_name: cuoiky-cadvisor
+    ports:
+      - "8082:8080"
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+    networks: [frontend, backend]
+
+  nginx-exporter:
+    image: nginx/nginx-prometheus-exporter:1.0.0
+    container_name: cuoiky-nginx-exporter
+    command:
+      - -nginx.scrape-uri=http://nginx:80/stub_status
+    ports:
+      - "9113:9113"
+
+  mysqld-exporter:
+    image: prom/mysqld-exporter:v0.15.0
+    container_name: cuoiky-mysqld-exporter
+    command:
+      - '--mysqld.address=cuoiky-db-1:3306'
+      - '--mysqld.username=root:12345'
+    ports:
+      - "9104:9104"
+    depends_on:
+      - db
   db:
     image: mysql:8.0.40
     restart: unless-stopped

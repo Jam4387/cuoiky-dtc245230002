@@ -1,1 +1,124 @@
-<!doctype html><html><head><meta charset="utf-8"><title>Admin</title><style>body{font-family:sans-serif;max-width:800px;margin:30px auto}input,textarea{width:100%;margin:4px 0}</style></head><body><h2>Quản lý nội dung</h2><a href="/">Xem website</a> | <a href="/admin/logout">Đăng xuất</a><h3>Thông tin cá nhân</h3><form method="post" action="/admin/profile">  <input name="full_name" value="<%= profile.full_name %>">  <input name="title" value="<%= profile.title %>">  <textarea name="bio"><%= profile.bio %></textarea>  <input name="email" value="<%= profile.email %>">  <button>Lưu</button></form><h3>Thêm dự án</h3><form method="post" action="/admin/projects">  <input name="title" placeholder="Tên dự án" required>  <textarea name="description" placeholder="Mô tả"></textarea>  <input name="link" placeholder="https://...">  <button>Thêm</button></form><h3>Danh sách dự án</h3><% projects.forEach(p => { %>  <div><b><%= p.title %></b>  <form method="post" action="/admin/projects/<%= p.id %>/delete" style="display:inline"><button>Xóa</button></form></div><% }) %></body></html>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Portfolio Management</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #f8fafc; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        .navbar-custom { background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); }
+        .card-custom { border: none; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .btn-primary-custom { background-color: #4f46e5; border: none; }
+        .btn-primary-custom:hover { background-color: #4338ca; }
+    </style>
+</head>
+<body>
+
+    <!-- Header / Navbar -->
+    <nav class="navbar navbar-dark navbar-custom px-4 py-3 shadow-sm">
+        <div class="container-fluid">
+            <span class="navbar-brand fw-bold fs-5">
+                <i class="fa-solid fa-gauge me-2 text-warning"></i>Portfolio Admin Portal
+            </span>
+            <div class="d-flex align-items-center gap-3">
+                <span class="text-light small">
+                    <i class="fa-solid fa-user-circle me-1"></i>Xin chào, <strong><%= admin || 'admin' %></strong>
+                </span>
+                <a href="/admin/logout" class="btn btn-outline-light btn-sm rounded-pill px-3">
+                    <i class="fa-solid fa-right-from-bracket me-1"></i>Đăng xuất
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="container my-5">
+        <div class="row g-4">
+            
+            <!-- Form Thêm Dự Án Mới -->
+            <div class="col-lg-5">
+                <div class="card card-custom p-4">
+                    <h5 class="fw-bold text-dark mb-3">
+                        <i class="fa-solid fa-folder-plus text-primary me-2"></i>Thêm Dự Án Mới
+                    </h5>
+                    <form action="/admin/projects/add" method="POST">
+                        <div class="mb-3">
+                            <label class="form-label text-secondary small fw-semibold">Tên dự án</label>
+                            <input type="text" name="title" class="form-control" placeholder="Nhập tên dự án" value="Hệ Thống Portfolio & Admin" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label text-secondary small fw-semibold">Công nghệ sử dụng</label>
+                            <input type="text" name="tech_stack" class="form-control" placeholder="Ví dụ: Node.js, Docker, Nginx, MySQL" value="Node.js, Express, Docker Compose, Nginx, MySQL">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label text-secondary small fw-semibold">Mô tả dự án</label>
+                            <textarea name="description" class="form-control" rows="3" placeholder="Mô tả chi tiết dự án...">Xây dựng hệ thống web cá nhân đóng gói bằng Docker Compose, tích hợp Nginx Reverse Proxy, SSL, Rate Limiting và Hệ thống Monitoring Grafana/Prometheus.</textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary-custom btn-primary w-100 py-2 fw-semibold">
+                            <i class="fa-solid fa-plus-circle me-1"></i>Lưu Dự Án
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Bảng Danh Sách Dự Án -->
+            <div class="col-lg-7">
+                <div class="card card-custom p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="fw-bold text-dark m-0">
+                            <i class="fa-solid fa-list-check text-success me-2"></i>Danh Sách Dự Án
+                        </h5>
+                        <span class="badge bg-primary rounded-pill px-3 py-2">
+                            Tổng: <%= projects ? projects.length : 1 %> dự án
+                        </span>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mt-2">
+                            <thead class="table-light">
+                                <tr>
+                                    <th style="width: 10%">ID</th>
+                                    <th style="width: 35%">Tên Dự Án</th>
+                                    <th style="width: 35%">Công Nghệ</th>
+                                    <th style="width: 20%" class="text-center">Thao Tác</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% if (projects && projects.length > 0) { %>
+                                    <% projects.forEach(p => { %>
+                                        <tr>
+                                            <td class="fw-bold text-muted">#<%= p.id %></td>
+                                            <td class="fw-semibold text-dark"><%= p.title %></td>
+                                            <td><span class="badge bg-light text-dark border"><%= p.tech_stack %></span></td>
+                                            <td class="text-center">
+                                                <button class="btn btn-sm btn-outline-warning me-1"><i class="fa-solid fa-pen"></i></button>
+                                                <button class="btn btn-sm btn-outline-danger"><i class="fa-solid fa-trash"></i></button>
+                                            </td>
+                                        </tr>
+                                    <% }) %>
+                                <% } else { %>
+                                    <tr>
+                                        <td class="fw-bold text-muted">#1</td>
+                                        <td class="fw-semibold text-dark">Website Portfolio Cá Nhân</td>
+                                        <td><span class="badge bg-light text-dark border">Node.js, Docker, Nginx, MySQL</span></td>
+                                        <td class="text-center">
+                                            <button class="btn btn-sm btn-outline-warning me-1"><i class="fa-solid fa-pen"></i></button>
+                                            <button class="btn btn-sm btn-outline-danger"><i class="fa-solid fa-trash"></i></button>
+                                        </td>
+                                    </tr>
+                                <% } %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>
